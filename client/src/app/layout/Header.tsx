@@ -35,10 +35,6 @@ const navStyles = {
 
 
 export default function Header({ darkMode, handleThemeChange }: Props) {
-  //const darkMode = darkMode;
-  const navigateHandler = (path: string) => {
-    console.log(path);
-  }
   return (
     <AppBar position="static" sx={{ mb: 4 }} >
       <Toolbar sx={{
