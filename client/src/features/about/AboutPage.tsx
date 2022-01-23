@@ -9,7 +9,7 @@ export default function AboutPage() {
         agent.TestErrors.getValidationError()
             .then(() => console.log('should not see this'))
             .catch(error => {
-                debugger
+                //debugger
                 setValidationError(error)
             })
     }
