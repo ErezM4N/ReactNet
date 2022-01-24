@@ -13,16 +13,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import ServerError from '../errors/ServerError';
 import NotFound from '../errors/NotFound';
 import BasketPage from '../../features/basket/BasketPage';
-import { useStoreContext } from '../context/StoreContext';
+//import { useStoreContext } from '../context/StoreContext';
 import { getCookie } from '../util/util';
 import agent from '../api/agent';
 import Loadingcomponent from './LoadingComponent';
 import CheckoutPage from '../../features/checkout/CheckoutPage';
+import { useAppDispatch } from '../store/configureStore';
+import { setBasket } from '../../features/basket/basketSlice';
 
 
 function App() {
 
-  const { setBasket } = useStoreContext();
+  //const { setBasket } = useStoreContext();
+  const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const palleteType = darkMode ? 'dark' : 'light'
@@ -42,13 +45,13 @@ function App() {
     const buyerId = getCookie('buyerId');
     if (buyerId) {
       agent.Basket.get()
-        .then(basket => setBasket(basket))
+        .then(basket => dispatch(setBasket(basket)))
         .catch(error => console.log(error))
         .finally(() => setLoading(false));
     } else {
       setLoading(false);
     }
-  }, [setBasket]);
+  }, [dispatch]);
 
   if (loading) return <Loadingcomponent message='Initializing app...' />
 
