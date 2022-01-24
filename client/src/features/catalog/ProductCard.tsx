@@ -11,15 +11,6 @@ interface Props {
 }
 
 export default function ProductCard({ product }: Props) {
-    //const [loading, setLoading] = useState(false);
-    //const { setBasket } = useStoreContext(); <<<<
-    // function handleAddItem(productId: number) {
-    //     setLoading(true);
-    //     agent.Basket.addItem(productId)
-    //         .then(basket => dispatch(setBasket(basket)))//setBasket(basket)
-    //         .catch(error => console.log(error))
-    //         .finally(() => setLoading(false));
-    // }
 
     const { status } = useAppSelector(state => state.basket);
     const dispatch = useAppDispatch();

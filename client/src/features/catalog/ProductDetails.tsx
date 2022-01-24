@@ -3,24 +3,19 @@ import { Divider, Grid, Table, TableBody, TableCell, TableContainer, TableRow, T
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import agent from "../../app/api/agent";
-import { useStoreContext } from "../../app/context/StoreContext";
 import NotFound from "../../app/errors/NotFound";
 import Loadingcomponent from "../../app/layout/LoadingComponent";
 import { Product } from "../../app/models/product";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
-import { addBasketItemAsync, removeBasketItemAsync, setBasket } from "../basket/basketSlice";
+import { addBasketItemAsync, removeBasketItemAsync } from "../basket/basketSlice";
 
 export default function ProductDetails() {
-    //const { basket, setBasket, removeItem } = useStoreContext();
     const { basket, status } = useAppSelector(state => state.basket);
     const dispatch = useAppDispatch();
-
     const { id } = useParams<{ id: string }>();
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
-
     const [quantity, setQuantity] = useState(0);
-    //const [submitting, setSubmitting] = useState(false);
     const item = basket?.items.find(i => i.productId === product?.id);
 
 
@@ -40,21 +35,13 @@ export default function ProductDetails() {
     }
 
     function handleUpdateCart() {
-        //setSubmitting(true);
         if (!item || quantity > item.quantity) {
             const updatedQuantity = item ? quantity - item.quantity : quantity;
             dispatch(addBasketItemAsync({productId: product?.id!, quantity: updatedQuantity}))
-            // agent.Basket.addItem(product?.id!, updatedQuantity)
-            //     .then(basket => dispatch(setBasket(basket)))
-            //     .catch(error => console.log(error))
-            //     .finally(() => setSubmitting(false))
         } else {
             const updatedQuantity = item.quantity - quantity;
+            debugger
             dispatch(removeBasketItemAsync({productId: product?.id!, quantity: updatedQuantity}))
-            // agent.Basket.removeItem(product?.id!, updatedQuantity)
-            //     .then(() => dispatch(removeItem({ productId: product?.id!, quantity: updatedQuantity })))
-            //     .catch(error => console.log(error))
-            //     .finally(() => setSubmitting(false))
         }
     }
 
