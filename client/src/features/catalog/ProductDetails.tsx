@@ -8,24 +8,28 @@ import Loadingcomponent from "../../app/layout/LoadingComponent";
 import { Product } from "../../app/models/product";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { addBasketItemAsync, removeBasketItemAsync } from "../basket/basketSlice";
+import { fetchProductAsync, productSelectors } from "./CatalogSlice";
 
 export default function ProductDetails() {
     const { basket, status } = useAppSelector(state => state.basket);
     const dispatch = useAppDispatch();
     const { id } = useParams<{ id: string }>();
-    const [product, setProduct] = useState<Product | null>(null);
-    const [loading, setLoading] = useState(true);
+    const product = useAppSelector(state => productSelectors.selectById(state, id));
+    const {status: productStatus} = useAppSelector(state => state.catalog);
+    //const [product, setProduct] = useState<Product | null>(null);
+    //const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(0);
     const item = basket?.items.find(i => i.productId === product?.id);
 
 
     useEffect(() => {
         if (item) setQuantity(item.quantity);
-        agent.Catalog.details(parseInt(id))
-            .then(response => setProduct(response))
-            .catch(error => console.log(error))
-            .finally(() => setLoading(false));
-    }, [id, item]);
+        if (!product) dispatch(fetchProductAsync(parseInt(id)));
+        // agent.Catalog.details(parseInt(id))
+        //     .then(response => setProduct(response))
+        //     .catch(error => console.log(error))
+        //     .finally(() => setLoading(false));
+    }, [id, item, dispatch, product]);
 
 
     function handleInputChange(event: any) {
@@ -37,15 +41,15 @@ export default function ProductDetails() {
     function handleUpdateCart() {
         if (!item || quantity > item.quantity) {
             const updatedQuantity = item ? quantity - item.quantity : quantity;
-            dispatch(addBasketItemAsync({productId: product?.id!, quantity: updatedQuantity}))
+            dispatch(addBasketItemAsync({ productId: product?.id!, quantity: updatedQuantity }))
         } else {
             const updatedQuantity = item.quantity - quantity;
             debugger
-            dispatch(removeBasketItemAsync({productId: product?.id!, quantity: updatedQuantity}))
+            dispatch(removeBasketItemAsync({ productId: product?.id!, quantity: updatedQuantity }))
         }
     }
 
-    if (loading) return <Loadingcomponent message='Loading product' />
+    if (productStatus.includes('pending')) return <Loadingcomponent message='Loading product' />
 
     if (!product) return <NotFound />
 
