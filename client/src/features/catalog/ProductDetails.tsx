@@ -2,10 +2,8 @@ import { LoadingButton } from "@mui/lab";
 import { Divider, Grid, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import agent from "../../app/api/agent";
 import NotFound from "../../app/errors/NotFound";
 import Loadingcomponent from "../../app/layout/LoadingComponent";
-import { Product } from "../../app/models/product";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { addBasketItemAsync, removeBasketItemAsync } from "../basket/basketSlice";
 import { fetchProductAsync, productSelectors } from "./CatalogSlice";
@@ -16,8 +14,6 @@ export default function ProductDetails() {
     const { id } = useParams<{ id: string }>();
     const product = useAppSelector(state => productSelectors.selectById(state, id));
     const {status: productStatus} = useAppSelector(state => state.catalog);
-    //const [product, setProduct] = useState<Product | null>(null);
-    //const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(0);
     const item = basket?.items.find(i => i.productId === product?.id);
 
@@ -25,10 +21,6 @@ export default function ProductDetails() {
     useEffect(() => {
         if (item) setQuantity(item.quantity);
         if (!product) dispatch(fetchProductAsync(parseInt(id)));
-        // agent.Catalog.details(parseInt(id))
-        //     .then(response => setProduct(response))
-        //     .catch(error => console.log(error))
-        //     .finally(() => setLoading(false));
     }, [id, item, dispatch, product]);
 
 
@@ -44,7 +36,6 @@ export default function ProductDetails() {
             dispatch(addBasketItemAsync({ productId: product?.id!, quantity: updatedQuantity }))
         } else {
             const updatedQuantity = item.quantity - quantity;
-            debugger
             dispatch(removeBasketItemAsync({ productId: product?.id!, quantity: updatedQuantity }))
         }
     }
@@ -115,7 +106,6 @@ export default function ProductDetails() {
                     </Grid>
                 </Grid>
             </Grid>
-
         </Grid>
     )
 

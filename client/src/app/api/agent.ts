@@ -13,9 +13,7 @@ axios.interceptors.response.use(async response => {
     await sleep();
     return response
 }, (error: AxiosError) => {
-    //console.log("caught by interceptor");
     const { data, status } = error.response!;
-
     switch (status) {
         case 400:
             if (data.errors) {
@@ -25,10 +23,8 @@ axios.interceptors.response.use(async response => {
                         modelStateErrors.push(data.errors[key])
                     }
                 }
-                //debugger
                 throw modelStateErrors.flat();
             }
-
 
             toast.error(data.title)
             break;
@@ -42,9 +38,7 @@ axios.interceptors.response.use(async response => {
                 pathname: '/server-error',
                 state: { error: data }
             })
-            //toast.error(data.title)
             break;
-
 
         default:
             break;
@@ -61,22 +55,21 @@ const requests = {
 }
 
 const Catalog = {
-    list: () => requests.get('products'),
+    list: () => requests.get('products'), 
     details: (id: number) => requests.get(`products/${id}`),
-
 }
+
 const TestErrors = {
     get400Error: () => requests.get('buggy/bad-request'),
     get401Error: () => requests.get('buggy/unauthorised'),
     get404Error: () => requests.get('buggy/not-found'),
     get500Error: () => requests.get('buggy/server-error'),
     getValidationError: () => requests.get('buggy/validation-error'),
-
 }
 
 const Basket = {
     get: () => requests.get('basket'),
-    addItem: (productId: number, quantity = 1) => requests.post(`basket?productId=${productId}&quantity=${quantity}`,{}),
+    addItem: (productId: number, quantity = 1) => requests.post(`basket?productId=${productId}&quantity=${quantity}`, {}),
     removeItem: (productId: number, quantity = 1) => requests.delete(`basket?productId=${productId}&quantity=${quantity}`),
 }
 

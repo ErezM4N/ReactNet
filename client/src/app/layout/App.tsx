@@ -57,7 +57,8 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <ToastContainer position='bottom-right' hideProgressBar />
+       {/* hideProgressBar */}
+      <ToastContainer theme="colored" position='bottom-right'  />
       <CssBaseline />
       <Header darkMode={darkMode} handleThemeChange={handleThemeChange} />
       <Container>
