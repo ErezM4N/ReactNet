@@ -65,7 +65,6 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
         <List sx={{ display: 'flex' }}>
           {midLink.map(({ title, path }) => (
             <ListItem
-              //onClick={e => navigateHandler(path)}
               component={NavLink}
               to={path}
               key={path}
@@ -88,7 +87,6 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
           <List sx={{ display: 'flex' }}>
             {rightLinks.map(({ title, path }) => (
               <ListItem
-                //onClick={e => navigateHandler(path)}
                 component={NavLink}
                 to={path}
                 key={path}
