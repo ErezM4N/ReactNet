@@ -1,24 +1,27 @@
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Container, CssBaseline } from "@mui/material";
-import Catalog from "../../features/catalog/Catalog";
-import Header from "./Header";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import HomePage from '../../features/home/HomePage';
-import ProductDetails from '../../features/catalog/ProductDetails';
-import AboutPage from '../../features/about/AboutPage';
-import ContactPage from '../../features/contact/ContactPage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ServerError from '../errors/ServerError';
-import NotFound from '../errors/NotFound';
+import AboutPage from '../../features/about/AboutPage';
+import { fetchCurrentUser } from "../../features/account/accountSlice";
+import Login from '../../features/account/Login';
+import Register from '../../features/account/Register';
 import BasketPage from '../../features/basket/BasketPage';
-import { getCookie } from '../util/util';
-import agent from '../api/agent';
-import Loadingcomponent from './LoadingComponent';
+import { fetchBasketAsync, setBasket } from '../../features/basket/basketSlice';
+import Catalog from "../../features/catalog/Catalog";
+import ProductDetails from '../../features/catalog/ProductDetails';
 import CheckoutPage from '../../features/checkout/CheckoutPage';
+import ContactPage from '../../features/contact/ContactPage';
+import HomePage from '../../features/home/HomePage';
+import agent from '../api/agent';
+import NotFound from '../errors/NotFound';
+import ServerError from '../errors/ServerError';
 import { useAppDispatch } from '../store/configureStore';
-import { setBasket } from '../../features/basket/basketSlice';
+import { getCookie } from '../util/util';
+import Header from "./Header";
+import Loadingcomponent from './LoadingComponent';
 
 
 function App() {
@@ -38,24 +41,39 @@ function App() {
     setDarkMode(!darkMode);
   }
 
-  useEffect(() => {
-    const buyerId = getCookie('buyerId');
-    if (buyerId) {
-      agent.Basket.get()
-        .then(basket => dispatch(setBasket(basket)))
-        .catch(error => console.log(error))
-        .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
+  async function initApp() {
+    try {
+      await dispatch(fetchCurrentUser());
+      await dispatch(fetchBasketAsync());
+    } catch (error) {
+      console.log(error);
     }
-  }, [dispatch]);
+  }
+
+  useEffect(() => {
+
+    initApp().then(()=>setLoading(false));
+
+
+
+    // const buyerId = getCookie('buyerId');
+    // dispatch(fetchCurrentUser());
+    // if (buyerId) {
+    //   agent.Basket.get()
+    //     .then(basket => dispatch(setBasket(basket)))
+    //     .catch(error => console.log(error))
+    //     .finally(() => setLoading(false));
+    // } else {
+    //   setLoading(false);
+    // }
+  }, []);
 
   if (loading) return <Loadingcomponent message='Initializing app...' />
 
   return (
     <ThemeProvider theme={theme}>
-       {/* hideProgressBar */}
-      <ToastContainer theme="colored" position='bottom-right'  />
+      {/* hideProgressBar */}
+      <ToastContainer theme="colored" position='bottom-right' />
       <CssBaseline />
       <Header darkMode={darkMode} handleThemeChange={handleThemeChange} />
       <Container>
@@ -69,6 +87,8 @@ function App() {
             <Route path='/server-error' component={ServerError} />
             <Route path='/basket' component={BasketPage} />
             <Route path='/checkout' component={CheckoutPage} />
+            <Route exact path='/login' component={Login} />
+            <Route exact path='/register' component={Register} />
             <Route component={NotFound} />
           </Switch>
           {/* <Catalog /> */}
