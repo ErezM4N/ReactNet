@@ -9,9 +9,9 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { useState } from 'react';
+//import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useAppDispatch } from '../../app/store/configureStore';
 import { signInUser } from './accountSlice';
 
@@ -20,14 +20,24 @@ import { signInUser } from './accountSlice';
 
 export default function Login() {
     const history = useHistory();
+    const location = useLocation<any>(); //useLocation
     const dispatch = useAppDispatch();
     const { register, handleSubmit, formState: { isSubmitting, errors, isValid } } = useForm({
         mode: 'all'
     });
 
     async function submitForm(data: FieldValues) {
-        await dispatch(signInUser(data));
-        history.push('/catalog');
+
+
+        try {
+            await dispatch(signInUser(data));
+            history.push(location.state?.from?.pathname || '/catalog');
+        } catch (error) {
+            console.log(error);
+        }
+
+
+
         // try {
         //     await agent.Account.login(data);
         // } catch (error) {
@@ -35,10 +45,10 @@ export default function Login() {
         // }
     }
 
-    const [values, setValues] = useState({
-        username: '',
-        password: ''
-    });
+    // const [values, setValues] = useState({
+    //     username: '',
+    //     password: ''
+    // });
 
     // const handleSubmit = (event:any) => {
     //     event.preventDefault();

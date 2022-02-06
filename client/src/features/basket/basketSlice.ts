@@ -17,7 +17,7 @@ const initialState: BasketState = {
 export const fetchBasketAsync = createAsyncThunk<Basket>(
     'basket/fetchBasketAsync',
     async (_, thunkAPI) => { // if cond. true >>>
-        debugger
+        //debugger
         try {
             return await agent.Basket.get();
         } catch (error: any) {
@@ -66,6 +66,9 @@ export const basketSlice = createSlice({
         setBasket: (state, action) => {
             state.basket = action.payload
         },
+        clearBasket: (state) => {
+            state.basket = null;
+        }
     },
     extraReducers: (builder => {
         // Add reducers for additional action types here, and handle loading state as needed
@@ -104,7 +107,7 @@ export const basketSlice = createSlice({
         });
 
         //builder.addCase(addBasketItemAsync.rejected, (state, action) => {
-        builder.addMatcher(isAnyOf(addBasketItemAsync.rejected,fetchBasketAsync.fulfilled), (state, action) => {
+        builder.addMatcher(isAnyOf(addBasketItemAsync.rejected, fetchBasketAsync.fulfilled), (state, action) => {
             state.status = 'idle';
             console.log(action.payload);
         });
@@ -112,4 +115,4 @@ export const basketSlice = createSlice({
 })
 
 
-export const { setBasket } = basketSlice.actions;
+export const { setBasket, clearBasket } = basketSlice.actions;

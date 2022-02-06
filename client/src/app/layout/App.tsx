@@ -1,6 +1,6 @@
 import { Container, CssBaseline } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,19 +9,18 @@ import { fetchCurrentUser } from "../../features/account/accountSlice";
 import Login from '../../features/account/Login';
 import Register from '../../features/account/Register';
 import BasketPage from '../../features/basket/BasketPage';
-import { fetchBasketAsync, setBasket } from '../../features/basket/basketSlice';
+import { fetchBasketAsync } from '../../features/basket/basketSlice';
 import Catalog from "../../features/catalog/Catalog";
 import ProductDetails from '../../features/catalog/ProductDetails';
 import CheckoutPage from '../../features/checkout/CheckoutPage';
 import ContactPage from '../../features/contact/ContactPage';
 import HomePage from '../../features/home/HomePage';
-import agent from '../api/agent';
 import NotFound from '../errors/NotFound';
 import ServerError from '../errors/ServerError';
 import { useAppDispatch } from '../store/configureStore';
-import { getCookie } from '../util/util';
 import Header from "./Header";
 import Loadingcomponent from './LoadingComponent';
+import PrivateRoute from "./PrivateRoute";
 
 
 function App() {
@@ -41,18 +40,27 @@ function App() {
     setDarkMode(!darkMode);
   }
 
-  async function initApp() {
+  const initApp = useCallback(async () => {
     try {
       await dispatch(fetchCurrentUser());
       await dispatch(fetchBasketAsync());
     } catch (error) {
       console.log(error);
     }
-  }
+  }, [dispatch])
+
+  // async function initApp() {
+  //   try {
+  //     await dispatch(fetchCurrentUser());
+  //     await dispatch(fetchBasketAsync());
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   useEffect(() => {
 
-    initApp().then(()=>setLoading(false));
+    initApp().then(() => setLoading(false));
 
 
 
@@ -66,7 +74,7 @@ function App() {
     // } else {
     //   setLoading(false);
     // }
-  }, []);
+  }, [initApp]);
 
   if (loading) return <Loadingcomponent message='Initializing app...' />
 
@@ -86,7 +94,8 @@ function App() {
             <Route path='/contact' component={ContactPage} />
             <Route path='/server-error' component={ServerError} />
             <Route path='/basket' component={BasketPage} />
-            <Route path='/checkout' component={CheckoutPage} />
+            {/* <Route path='/checkout' component={CheckoutPage} /> */}
+            <PrivateRoute path='/checkout' component={CheckoutPage} />
             <Route exact path='/login' component={Login} />
             <Route exact path='/register' component={Register} />
             <Route component={NotFound} />

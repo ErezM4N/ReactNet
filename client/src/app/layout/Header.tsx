@@ -4,7 +4,6 @@ import Switch from '@mui/material/Switch';
 import { Link, NavLink } from "react-router-dom";
 import { useAppSelector } from "../store/configureStore";
 import SignedInMenu from "./SignedInMenu";
-import SignInMenu from "./SignedInMenu";
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
