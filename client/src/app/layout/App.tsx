@@ -49,38 +49,16 @@ function App() {
     }
   }, [dispatch])
 
-  // async function initApp() {
-  //   try {
-  //     await dispatch(fetchCurrentUser());
-  //     await dispatch(fetchBasketAsync());
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
   useEffect(() => {
 
     initApp().then(() => setLoading(false));
 
-
-
-    // const buyerId = getCookie('buyerId');
-    // dispatch(fetchCurrentUser());
-    // if (buyerId) {
-    //   agent.Basket.get()
-    //     .then(basket => dispatch(setBasket(basket)))
-    //     .catch(error => console.log(error))
-    //     .finally(() => setLoading(false));
-    // } else {
-    //   setLoading(false);
-    // }
   }, [initApp]);
 
   if (loading) return <Loadingcomponent message='Initializing app...' />
 
   return (
     <ThemeProvider theme={theme}>
-      {/* hideProgressBar */}
       <ToastContainer theme="colored" position='bottom-right' />
       <CssBaseline />
       <Header darkMode={darkMode} handleThemeChange={handleThemeChange} />
@@ -94,13 +72,11 @@ function App() {
             <Route path='/contact' component={ContactPage} />
             <Route path='/server-error' component={ServerError} />
             <Route path='/basket' component={BasketPage} />
-            {/* <Route path='/checkout' component={CheckoutPage} /> */}
             <PrivateRoute path='/checkout' component={CheckoutPage} />
             <Route exact path='/login' component={Login} />
             <Route exact path='/register' component={Register} />
             <Route component={NotFound} />
           </Switch>
-          {/* <Catalog /> */}
         </Container>
       </Container>
     </ThemeProvider>

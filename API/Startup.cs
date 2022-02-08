@@ -69,7 +69,7 @@ namespace API
             {
                 //opt.User.RequireUniqueEmail = true; --- NOT WORKING
             })
-                .AddRoles<IdentityRole>()
+                .AddRoles<Role>() //IdentityRole----> Role
                 .AddEntityFrameworkStores<StoreContext>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt =>

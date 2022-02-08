@@ -16,7 +16,6 @@ import { toast } from 'react-toastify';
 
 export default function Register() {
     const history = useHistory();
-    //const [validationError, setValidationError] = useState([]);
     const { register, handleSubmit, setError, formState: { isSubmitting, errors, isValid } } = useForm({
         mode: 'all'
     });
@@ -91,22 +90,6 @@ export default function Register() {
                     error={!!errors.password}
                     helperText={errors?.password?.message}
                 />
-
-
-                {/* {validationError.length > 0 &&
-                    <Alert severity="error">
-                        <AlertTitle>Validation Error</AlertTitle>
-                        <List>
-                            {validationError.map(error => (
-                                <ListItem key={error}>
-                                    <ListItemText>{error}</ListItemText>
-                                </ListItem>
-                            ))}
-
-                        </List>
-                    </Alert>
-                } */}
-
                 <LoadingButton
                     loading={isSubmitting}
                     disabled={!isValid}

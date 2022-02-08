@@ -1,3 +1,4 @@
+import * as React from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { LoadingButton } from '@mui/lab';
 import { Paper } from '@mui/material';
@@ -8,19 +9,15 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import * as React from 'react';
-//import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useAppDispatch } from '../../app/store/configureStore';
 import { signInUser } from './accountSlice';
 
 
-//const theme = createTheme();
-
 export default function Login() {
     const history = useHistory();
-    const location = useLocation<any>(); //useLocation
+    const location = useLocation<any>();
     const dispatch = useAppDispatch();
     const { register, handleSubmit, formState: { isSubmitting, errors, isValid } } = useForm({
         mode: 'all'
@@ -36,34 +33,11 @@ export default function Login() {
             console.log(error);
         }
 
-
-
-        // try {
-        //     await agent.Account.login(data);
-        // } catch (error) {
-        //     console.log(error);
-        // }
     }
 
-    // const [values, setValues] = useState({
-    //     username: '',
-    //     password: ''
-    // });
 
-    // const handleSubmit = (event:any) => {
-    //     event.preventDefault();
-    //     agent.Account.login(values);
-    // };
-
-    // function handleInputChange(event: any) {
-    //     const { name, value } = event.target;
-    //     setValues({
-    //         ...values, [name]: value
-    //     })
-    // }
 
     return (
-        // <ThemeProvider theme={theme}>
         <Container component={Paper} maxWidth="sm" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 4 }}>
             <CssBaseline />
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -81,9 +55,6 @@ export default function Login() {
                     {...register('username', { required: 'Username is required' })}
                     error={!!errors.username}
                     helperText={errors?.username?.message}
-                //name="username"
-                // onChange={handleInputChange}
-                // value={values.username}
                 />
                 <TextField
                     margin="normal"
@@ -93,9 +64,7 @@ export default function Login() {
                     {...register('password', { required: 'Password is required' })}
                     error={!!errors.password}
                     helperText={errors?.password?.message}
-                //name="password"
-                // onChange={handleInputChange}
-                // value={values.password}
+
                 />
                 <LoadingButton
                     loading={isSubmitting}
@@ -114,6 +83,5 @@ export default function Login() {
                 </Grid>
             </Box>
         </Container>
-        // </ThemeProvider>
     );
 }
