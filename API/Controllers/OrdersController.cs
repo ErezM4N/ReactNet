@@ -86,6 +86,8 @@ namespace API.Controllers
                 shippingAddress = orderDto.ShippingAddress,
                 Subtotal = subtotal,
                 DeliveryFee = deliveryFee,
+                PaymentIntentId = basket.PaymentIntentId
+                
                 //OrderDate = new DateTime(),
                 //OrderStatus = OrderStatus.Pending,
 
