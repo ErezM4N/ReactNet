@@ -1,17 +1,17 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import { LoadingButton } from "@mui/lab";
 import { Box, Button, Paper, Step, StepLabel, Stepper, Typography } from "@mui/material";
+import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { StripeElementType } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 import { FieldValues, FormProvider, useForm } from "react-hook-form";
-import AddressForm from "./AddressForm";
-import PaymentForm from "./PaymentForm";
-import Review from "./Review";
-import { yupResolver } from '@hookform/resolvers/yup';
-import { validationSchema } from "./checkoutValidation";
 import agent from "../../app/api/agent";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { clearBasket } from "../basket/basketSlice";
-import { LoadingButton } from "@mui/lab";
-import { StripeElementType } from "@stripe/stripe-js";
-import { CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import AddressForm from "./AddressForm";
+import { validationSchema } from "./checkoutValidation";
+import PaymentForm from "./PaymentForm";
+import Review from "./Review";
 
 const steps = ['Shipping address', 'Review your order', 'Payment details'];
 
@@ -64,7 +64,6 @@ export default function CheckoutPage() {
     useEffect(() => {
         agent.Account.fetchAddress()
             .then(response => {
-                //debugger
                 if (response) {
                     methods.reset({ ...methods.getValues(), ...response, saveAddress: false })
                 }
@@ -103,31 +102,14 @@ export default function CheckoutPage() {
         } catch (error) {
             console.log(error);
             setLoading(false);
-
         }
 
     }
-/**
- * 
- * PASSING TO 'submitOrder' FUNC
- * 
- */
+
     const handleNext = async (data: FieldValues) => {
-        //const { nameOnCard, saveAddress, ...shippingAddress } = data;
-        //debugger
-        if (activeStep === steps.length - 1) { // Final steps
+
+        if (activeStep === steps.length - 1) {
             await submitOrder(data);
-            //console.log(data);
-            //setLoading(true);
-            //try {
-                // const orderNumber = await agent.Orders.create({ saveAddress, shippingAddress });//.then().catch();
-                // setOrderNumber(orderNumber);
-                // setActiveStep(activeStep + 1);
-                // dispatch(clearBasket());
-                // setLoading(false);
-            // } catch (error) {
-            //     console.log(error);
-            // }
         } else {
             setActiveStep(activeStep + 1);
         }
@@ -148,18 +130,24 @@ export default function CheckoutPage() {
         }
     }
 
-
     const finalStep = () => {
         return (
             <>
                 <Typography variant="h5" gutterBottom>
-                    Thank you for your order.
+                    {paymentMessage}
                 </Typography>
-                <Typography variant="subtitle1">
-                    Your order number is #{orderNumber}. We have not emailed your order
-                    confirmation, and will not send you an update when your order has
-                    shipped as this is a fake store!
-                </Typography>
+                {paymentSucceeded ? (
+                    <Typography variant="subtitle1">
+                        Your order number is #{orderNumber}. We have not emailed your order
+                        confirmation, and will not send you an update when your order has
+                        shipped as this is a fake store!
+                    </Typography>
+                ) : (
+                    <Button variant='contained' onClick={handleBack}>
+                        Go back and try againg
+                    </Button>
+                )}
+
             </>
         )
     }
