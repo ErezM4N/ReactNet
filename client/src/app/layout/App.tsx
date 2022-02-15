@@ -63,10 +63,10 @@ function App() {
       <ToastContainer theme="colored" position='bottom-right' />
       <CssBaseline />
       <Header darkMode={darkMode} handleThemeChange={handleThemeChange} />
-      <Container>
-        <Container>
+      <Route exact path='/' component={HomePage} />
+      <Route path={'/(.+)'} render={() => (
+        <Container sx={{ mt: 4 }}>
           <Switch>
-            <Route exact path='/' component={HomePage} />
             <Route exact path='/catalog' component={Catalog} />
             <Route path='/catalog/:id' component={ProductDetails} />
             <Route path='/about' component={AboutPage} />
@@ -74,14 +74,16 @@ function App() {
             <Route path='/server-error' component={ServerError} />
             <Route path='/basket' component={BasketPage} />
             {/*  component={CheckoutPage} ---> */}
-            <PrivateRoute path='/checkout' component={CheckoutWrapper} /> 
+            <PrivateRoute path='/checkout' component={CheckoutWrapper} />
             <PrivateRoute path='/orders' component={Orders} />
             <Route exact path='/login' component={Login} />
             <Route exact path='/register' component={Register} />
             <Route component={NotFound} />
           </Switch>
         </Container>
-      </Container>
+      )} />
+
+
     </ThemeProvider>
   );
 }

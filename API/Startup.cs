@@ -34,7 +34,7 @@ namespace API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
-                c.AddSecurityDefinition("Bearer",new OpenApiSecurityScheme
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "Jwt auth header",
                     Name = "Authorization",
@@ -62,7 +62,9 @@ namespace API
             });
             services.AddDbContext<StoreContext>(opt =>
             {
-                opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+                //opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")); -->
+                opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+
             });
             services.AddCors();
             services.AddIdentityCore<User>(opt =>
@@ -105,6 +107,9 @@ namespace API
 
             app.UseRouting();
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseCors(opt =>
             {
                 opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3000", "http://localhost:3001");
@@ -117,6 +122,7 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapFallbackToController("Index", "Fallback");
             });
         }
     }
