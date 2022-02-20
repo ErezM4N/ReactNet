@@ -6,11 +6,12 @@ import { Product } from '../../app/models/product';
 import { useAppDispatch, useAppSelector } from '../../app/store/configureStore';
 import { currencyFormat } from '../../app/util/util';
 import { addBasketItemAsync } from '../basket/basketSlice';
+
 interface Props {
     product: Product;
 }
 
-export default function ProductCard({ product }: Props) {
+const ProductCard = ({ product }: Props) => {
 
     const { status } = useAppSelector(state => state.basket);
     const dispatch = useAppDispatch();
@@ -52,3 +53,5 @@ export default function ProductCard({ product }: Props) {
         </Card>
     )
 }
+
+export default ProductCard;

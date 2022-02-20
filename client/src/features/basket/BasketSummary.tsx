@@ -6,15 +6,12 @@ interface Props {
     subtotal?: number;
 }
 
-export default function BasketSummary({ subtotal }: Props) {
+const BasketSummary = ({ subtotal }: Props) => {
     const { basket } = useAppSelector(state => state.basket);   // useStoreContext();
     if (subtotal === undefined)
         subtotal = basket?.items.reduce((sum, item) => sum + (item.quantity * item.price), 0) ?? 0;
 
     const deliveryFee = subtotal > 10000 ? 0 : 500;
-
-    //                              if return null or undefined ?? return 0 value
-    //const subtotal = basket?.items.reduce((sum, item) => sum + (item.quantity * item.price), 0) ?? 0;
 
     return (
         <>
@@ -44,3 +41,4 @@ export default function BasketSummary({ subtotal }: Props) {
         </>
     )
 }
+export default BasketSummary;

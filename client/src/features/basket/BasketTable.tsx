@@ -10,7 +10,7 @@ interface Props {
     isBasket?: boolean;
 }
 
-export default function BasketTable({ items, isBasket = true }: Props) {
+const BasketTable = ({ items, isBasket = true }: Props) => {
     const alignItems = 'center';
     const { status } = useAppSelector(state => state.basket); // basket, 
     const dispatch = useAppDispatch();
@@ -73,3 +73,4 @@ export default function BasketTable({ items, isBasket = true }: Props) {
         </TableContainer>
     )
 }
+export default BasketTable;

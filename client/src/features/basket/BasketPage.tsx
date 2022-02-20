@@ -4,9 +4,9 @@ import { useAppSelector } from "../../app/store/configureStore";
 import BasketSummary from "./BasketSummary";
 import BasketTable from "./BasketTable";
 
-export default function BasketPage() {
-    const { basket } = useAppSelector(state => state.basket);//, status
-    //const dispatch = useAppDispatch();
+const BasketPage = () => {
+
+    const { basket } = useAppSelector(state => state.basket);
 
     if (!basket) return <Typography variant="h3">Your basket is empty</Typography>
 
@@ -29,7 +29,7 @@ export default function BasketPage() {
                 </Grid>
             </Grid>
         </>
-
     )
 }
 
+export default BasketPage;

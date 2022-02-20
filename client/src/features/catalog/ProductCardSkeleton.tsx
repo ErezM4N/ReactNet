@@ -7,7 +7,7 @@ import {
     Skeleton
 } from "@mui/material";
 
-export default function ProductCardSkeleton() {
+const ProductCardSkeleton = () => {
     return (
         <Grid item xs component={Card}>
             <CardHeader
@@ -39,3 +39,4 @@ export default function ProductCardSkeleton() {
         </Grid>
     )
 }
+export default ProductCardSkeleton;

@@ -8,7 +8,7 @@ interface Props {
     products: Product[];
 }
 
-export default function ProductList({ products }: Props) {
+const ProductList = ({ products }: Props) => {
     const { productsLoaded } = useAppSelector(state => state.catalog);
     return (
         <Grid container spacing={4}>
@@ -24,3 +24,4 @@ export default function ProductList({ products }: Props) {
         </Grid>
     )
 }
+export default ProductList;

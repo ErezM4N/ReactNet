@@ -10,10 +10,9 @@ interface Props {
 export default function CheckboxButtons({ items, checked, onChange }: Props) {
     const [checkedItems, setCheckedItems] = useState(checked || [])
 
-    function handleChecked(value: string) {
+    const handleChecked = (value: string) => {
         const currentIndex = checkedItems.findIndex(item => item === value);
         let newChecked: string[] = [];
-        //debugger
         if (currentIndex === -1) newChecked = [...checkedItems, value];
         else newChecked = checkedItems.filter(item => item !== value);
         setCheckedItems(newChecked);

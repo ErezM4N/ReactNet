@@ -17,7 +17,6 @@ const initialState: BasketState = {
 export const fetchBasketAsync = createAsyncThunk<Basket>(
     'basket/fetchBasketAsync',
     async (_, thunkAPI) => { // if cond. true >>>
-        //debugger
         try {
             return await agent.Basket.get();
         } catch (error: any) {

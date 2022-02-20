@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { setProductParams } from "./CatalogSlice";
 
-export default function ProductSearch() {
+const ProductSearch = () => {
     const { productParams } = useAppSelector(state => state.catalog);
     const [searchTerm, setSearchTerm] = useState(productParams.searchTerm);
     const dispatch = useAppDispatch();
@@ -27,3 +27,4 @@ export default function ProductSearch() {
         />
     )
 }
+export default ProductSearch;

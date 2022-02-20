@@ -19,8 +19,6 @@ export const signInUser = createAsyncThunk<User, FieldValues>(
     'account/signInUser',
     async (data, thunkApi) => {
         try {
-            //const user = await agent.Account.login(data);
-            //debugger
             const userDto = await agent.Account.login(data);
             const { basket, ...user } = userDto;
             if (basket) thunkApi.dispatch(setBasket(basket));
@@ -31,13 +29,11 @@ export const signInUser = createAsyncThunk<User, FieldValues>(
         }
     }
 )
-//    'account/signInUser',
 export const fetchCurrentUser = createAsyncThunk<User>(
     'account/fetchCurrentUser',
     async (_, thunkApi) => {
         thunkApi.dispatch(setUser(JSON.parse(localStorage.getItem('user')!)));
         try {
-            //const user = await agent.Account.currentUser();
             const userDto = await agent.Account.currentUser();
             const { basket, ...user } = userDto;
             if (basket) thunkApi.dispatch(setBasket(basket));
@@ -64,12 +60,15 @@ export const accountSlice = createSlice({
             history.push('/');
         },
         setUser: (state, action) => {
+            let claims = JSON.parse(atob(action.payload.token.split('.')[1]));
+            let roles = claims['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+            state.user = { ...action.payload, roles: typeof (roles) === 'string' ? [roles] : roles };
+
             state.user = action.payload;
         }
     },
     extraReducers: (builder => {
         builder.addCase(fetchCurrentUser.rejected, (state) => {
-            //debugger;
             state.user = null;
             localStorage.removeItem('user');
             toast.error('Session expired - please login again');
@@ -78,11 +77,12 @@ export const accountSlice = createSlice({
         })
 
         builder.addMatcher(isAnyOf(signInUser.fulfilled, fetchCurrentUser.fulfilled), (state, action) => {
-            state.user = action.payload;
+            let claims = JSON.parse(atob(action.payload.token.split('.')[1]));
+            let roles = claims['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+            state.user = { ...action.payload, roles: typeof (roles) === 'string' ? [roles] : roles };
         });
         builder.addMatcher(isAnyOf(signInUser.rejected, fetchCurrentUser.rejected), (state, action) => {
-            //console.log(action.payload);
-            throw(action.payload);
+            throw (action.payload);
         })
     })
 })

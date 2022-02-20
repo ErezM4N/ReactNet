@@ -5,7 +5,7 @@ interface Props {
 
 }
 
-export default function LoadingComponent({ message = 'Loading...' }: Props) {
+const LoadingComponent = ({ message = 'Loading...' }: Props) => {
     return (
         <Backdrop open={true} invisible={true}>
             <Box display='flex' justifyContent='center' alignItems='center' height='100vh'>
@@ -15,3 +15,4 @@ export default function LoadingComponent({ message = 'Loading...' }: Props) {
         </Backdrop>
     )
 }
+export default LoadingComponent;
