@@ -15,7 +15,7 @@ import { useAppDispatch } from '../../app/store/configureStore';
 import { signInUser } from './accountSlice';
 
 
-export default function Login() {
+const Login = () => {
     const history = useHistory();
     const location = useLocation<any>();
     const dispatch = useAppDispatch();
@@ -85,3 +85,4 @@ export default function Login() {
         </Container>
     );
 }
+export default Login;

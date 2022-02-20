@@ -4,15 +4,13 @@ import { useFormContext } from 'react-hook-form';
 import AppCheckbox from '../../app/components/AppCheckbox';
 import AppTextInput from '../../app/components/AppTextInput';
 
-export default function AddressForm() {
-  // const { control, handleSubmit } = useForm();
+const AddressForm = () => {
   const { control, formState } = useFormContext();
   return (
     <>
       <Typography variant="h6" gutterBottom>
         Shipping address
       </Typography>
-      {/* <form onSubmit={handleSubmit((data) => console.log(data))}> */}
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <AppTextInput control={control} name='fullName' label='Full Name' />
@@ -41,25 +39,10 @@ export default function AddressForm() {
             name='saveAddress'
             label='Save this as the default address'
             control={control} />
-          {/* <FormControlLabel
-              control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
-              label="Use this address for payment details"
-            /> */}
         </Grid>
       </Grid>
-      {/*<Button type='submit'>Submit form</Button>
-       </form> */}
     </>
   );
 }
 
-/* <TextField
-  required
-  id="firstName"
-    name="firstName"
-    label="First name"
-    fullWidth
-  autoComplete="given-name"
-    variant="standard"
-/> */
-
+export default AddressForm;

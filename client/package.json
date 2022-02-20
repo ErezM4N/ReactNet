@@ -24,6 +24,7 @@
     "axios": "^0.24.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-dropzone": "^12.0.4",
     "react-hook-form": "^7.25.3",
     "react-hot-ts": "^0.7.3",
     "react-redux": "^7.2.6",
@@ -39,7 +40,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build":"react-scripts build",
+    "build": "react-scripts build",
     "postbuild": "rimraf ../API/wwwroot && move build ../API/wwwroot",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -9,7 +9,7 @@ interface ScoreContextValue {
 
 export const StoreContext = createContext<ScoreContextValue | undefined>(undefined);
 
-export function useStoreContext() {
+export const useStoreContext = () => {
     const context = useContext(StoreContext);
     if (context === undefined) {
         throw Error('Oops - we do not seem to be inside the provider');
@@ -19,10 +19,10 @@ export function useStoreContext() {
 
 }
 
-export function StoreProvider({ children }: PropsWithChildren<any>) {
+export const StoreProvider = ({ children }: PropsWithChildren<any>) => {
     const [basket, setBasket] = useState<Basket | null>(null);
 
-    function removeItem(productId: number, quantity: number) {
+    const removeItem = (productId: number, quantity: number) => {
         if (!basket) return;
         const items = [...basket.items];
         const itemIndex = items.findIndex(i => i.productId === productId);

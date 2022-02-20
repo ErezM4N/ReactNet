@@ -14,7 +14,7 @@ import { Link, useHistory } from 'react-router-dom';
 import agent from '../../app/api/agent';
 import { toast } from 'react-toastify';
 
-export default function Register() {
+const Register = () => {
     const history = useHistory();
     const { register, handleSubmit, setError, formState: { isSubmitting, errors, isValid } } = useForm({
         mode: 'all'
@@ -45,11 +45,11 @@ export default function Register() {
             </Typography>
             <Box component="form" onSubmit={handleSubmit((data) =>
                 agent.Account.register(data)
-                .then(()=>{
-                    toast.success('Registration successfull - you can now login');
-                    history.push('/login');
-                })
-                .catch(error => handleApiErrors(error)))
+                    .then(() => {
+                        toast.success('Registration successfull - you can now login');
+                        history.push('/login');
+                    })
+                    .catch(error => handleApiErrors(error)))
             } noValidate sx={{ mt: 1 }}>
                 <TextField
                     margin="normal"
@@ -109,3 +109,4 @@ export default function Register() {
         </Container>
     );
 }
+export default Register;

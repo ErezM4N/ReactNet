@@ -5,7 +5,7 @@ import { signOut } from "../../features/account/accountSlice";
 import { clearBasket } from "../../features/basket/basketSlice";
 import { useAppDispatch, useAppSelector } from "../store/configureStore";
 
-export default function SignedInMenu() {
+const SignedInMenu = () => {
     const dispatch = useAppDispatch();
     const { user } = useAppSelector(state => state.account)
     const [anchorEl, setAnchorEl] = React.useState(null);//<null | HTMLElement>
@@ -45,3 +45,5 @@ export default function SignedInMenu() {
         </>
     );
 }
+
+export default SignedInMenu;

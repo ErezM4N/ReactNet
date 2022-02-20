@@ -8,6 +8,7 @@ import AboutPage from '../../features/about/AboutPage';
 import { fetchCurrentUser } from "../../features/account/accountSlice";
 import Login from '../../features/account/Login';
 import Register from '../../features/account/Register';
+import Inventory from "../../features/admin/Inventory";
 import BasketPage from '../../features/basket/BasketPage';
 import { fetchBasketAsync } from '../../features/basket/basketSlice';
 import Catalog from "../../features/catalog/Catalog";
@@ -24,7 +25,7 @@ import Loadingcomponent from './LoadingComponent';
 import PrivateRoute from "./PrivateRoute";
 
 
-function App() {
+const App = () => {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
@@ -73,17 +74,15 @@ function App() {
             <Route path='/contact' component={ContactPage} />
             <Route path='/server-error' component={ServerError} />
             <Route path='/basket' component={BasketPage} />
-            {/*  component={CheckoutPage} ---> */}
             <PrivateRoute path='/checkout' component={CheckoutWrapper} />
             <PrivateRoute path='/orders' component={Orders} />
+            <PrivateRoute roles={['Admin']} path='/inventory' component={Inventory} />
             <Route exact path='/login' component={Login} />
             <Route exact path='/register' component={Register} />
             <Route component={NotFound} />
           </Switch>
         </Container>
       )} />
-
-
     </ThemeProvider>
   );
 }

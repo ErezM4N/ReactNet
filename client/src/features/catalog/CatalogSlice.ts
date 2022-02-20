@@ -38,7 +38,6 @@ export const fetchProductsAsync = createAsyncThunk<Product[], void, { state: Roo
         const params = getAxiosParams(thunkAPI.getState().catalog.productParams);
         try {
             const response = await agent.Catalog.list(params);
-            //debugger
             //return response;
             //                              payload.any
             thunkAPI.dispatch(setMetaData(response.metaData)); //state.metaData = action.payload;
@@ -76,8 +75,8 @@ function initParams() {
         pageNumber: 1,
         pageSize: 6,
         orderBy: 'name',
-         brands: [],
-         types: []
+        brands: [],
+        types: []
 
     }
 }
@@ -108,7 +107,16 @@ export const catalogSlice = createSlice({
         },
         resetProductParams: (state) => {
             state.productParams = initParams();
+        },
+        setProduct: (state, action) => {
+            productsAdapter.upsertOne(state, action.payload);
+            state.productsLoaded = false;
+        },
+        removeProduct: (state, action) => {
+            productsAdapter.removeOne(state, action.payload);
+            state.productsLoaded = false;
         }
+
     },
     extraReducers: (builder => {
 
@@ -162,4 +170,11 @@ export const catalogSlice = createSlice({
 
 export const productSelectors = productsAdapter.getSelectors((state: RootState) => state.catalog);
 
-export const { resetProductParams, setProductParams, setMetaData, setPageNumber } = catalogSlice.actions;//
+export const {
+    resetProductParams,
+    setProductParams,
+    setMetaData,
+    setPageNumber,
+    setProduct,
+    removeProduct
+} = catalogSlice.actions;//

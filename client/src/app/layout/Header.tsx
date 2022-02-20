@@ -4,13 +4,12 @@ import Switch from '@mui/material/Switch';
 import { Link, NavLink } from "react-router-dom";
 import { useAppSelector } from "../store/configureStore";
 import SignedInMenu from "./SignedInMenu";
-
-const label = { inputProps: { 'aria-label': 'Switch demo' } };
-
 interface Props {
   darkMode: boolean;
   handleThemeChange: () => void;
 }
+
+const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 const midLink = [
   { title: 'catalog', path: '/catalog' },
@@ -35,8 +34,7 @@ const navStyles = {
   }
 }
 
-
-export default function Header({ darkMode, handleThemeChange }: Props) {
+const Header = ({ darkMode, handleThemeChange }: Props) => {
   const { basket } = useAppSelector(state => state.basket); //  useStoreContext();
   const { user } = useAppSelector(state => state.account);
   const itemCount = basket?.items.reduce((sum, item) => sum + item.quantity, 0);
@@ -75,6 +73,16 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
               {title.toUpperCase()}
             </ListItem>
           ))}
+
+          {user && user.roles?.includes('Admin') &&
+            <ListItem
+              component={NavLink}
+              to={'/inventory'}
+              sx={navStyles}
+            >
+              INVENTORY
+            </ListItem>}
+
         </List>
 
 
@@ -108,3 +116,4 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
     </AppBar>
   )
 }
+export default Header;

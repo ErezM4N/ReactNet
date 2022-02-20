@@ -2,10 +2,10 @@ import { Alert, AlertTitle, Button, ButtonGroup, Container, List, ListItem, List
 import { useState } from "react";
 import agent from "../../app/api/agent";
 
-export default function AboutPage() {
+const AboutPage=()=> {
 
     const [validationError, setValidationError] = useState<string[]>([]);
-    function getValidationError() {
+    const getValidationError=()=> {
         agent.TestErrors.getValidationError()
             .then(() => console.log('should not see this'))
             .catch(error => {
@@ -40,3 +40,5 @@ export default function AboutPage() {
     )
 
 }
+
+export default AboutPage;

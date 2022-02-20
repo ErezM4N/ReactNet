@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Container, Divider, Paper, Typography } from '@mui/material'
 import { useHistory, useLocation } from 'react-router-dom'
 
-export default function ServerError() {
+const ServerError = () => {
     const history = useHistory();
     const { state } = useLocation<any>();
 
@@ -21,3 +21,5 @@ export default function ServerError() {
         </Container>
     )
 }
+
+export default ServerError

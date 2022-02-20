@@ -8,12 +8,12 @@ import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { addBasketItemAsync, removeBasketItemAsync } from "../basket/basketSlice";
 import { fetchProductAsync, productSelectors } from "./CatalogSlice";
 
-export default function ProductDetails() {
+const ProductDetails = () => {
     const { basket, status } = useAppSelector(state => state.basket);
     const dispatch = useAppDispatch();
     const { id } = useParams<{ id: string }>();
     const product = useAppSelector(state => productSelectors.selectById(state, id));
-    const {status: productStatus} = useAppSelector(state => state.catalog);
+    const { status: productStatus } = useAppSelector(state => state.catalog);
     const [quantity, setQuantity] = useState(0);
     const item = basket?.items.find(i => i.productId === product?.id);
 
@@ -24,13 +24,13 @@ export default function ProductDetails() {
     }, [id, item, dispatch, product]);
 
 
-    function handleInputChange(event: any) {
+    const handleInputChange = (event: any) => {
         if (event.target.value >= 0) {
             setQuantity(parseInt(event.target.value));
         }
     }
 
-    function handleUpdateCart() {
+    const handleUpdateCart = () => {
         if (!item || quantity > item.quantity) {
             const updatedQuantity = item ? quantity - item.quantity : quantity;
             dispatch(addBasketItemAsync({ productId: product?.id!, quantity: updatedQuantity }))
@@ -110,3 +110,5 @@ export default function ProductDetails() {
     )
 
 }
+
+export default ProductDetails;
